@@ -15,11 +15,6 @@ export class TasksService {
     return this.tasks.find((task) => task.id === id);
   }
 
-  // TO-DO
-  // getTasksByStatus(status: string): Task {
-  //   return this.tasks.find((task) => task.status === status);
-  // }
-
   createTask(createTaskDTO: CreateTaskDTO): Task {
     const { title, description } = createTaskDTO;
     const task: Task = {
@@ -31,4 +26,9 @@ export class TasksService {
     this.tasks.push(task);
     return task;
   }
+
+  deleteTask(id: string): void {
+    this.tasks = this.tasks.filter((task) => task.id !== id);
+  }
+
 }

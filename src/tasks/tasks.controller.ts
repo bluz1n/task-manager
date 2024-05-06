@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { Task } from './task.model';
 import { CreateTaskDTO } from './dto/create-task-dto';
@@ -12,20 +12,19 @@ export class TasksController {
     return this.tasksService.getAllTasks();
   }
 
-  @Get('/:id')
+  @Get(':id')
   getTasksById(@Param('id') id: string): Task {
     return this.tasksService.getTasksById(id);
   }
 
-  // TO-DO
-  // @Get('/:status')
-  // getTasksByStatus(@Param('status') status: string): Task {
-  //   return this.tasksService.getTasksByStatus(status);
-  // }
-
   @Post()
   createTask(@Body() CreateTaskDTO): CreateTaskDTO {
     return this.tasksService.createTask(CreateTaskDTO);
+  }
+
+  @Delete(':id') 
+  deleteTask(@Param('id') id: string): void {
+    return this.tasksService.deleteTask(id);
   }
 
 }
