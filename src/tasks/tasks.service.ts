@@ -18,20 +18,10 @@ export class TasksService {
     }
   }
     
-
-  // private tasks: Task[] = [];
-
   // getAllTasks(): Task[] {
   //   return this.tasks;
   // }
 
-  // getTasksById(id: string): Task {
-  //   const found = this.tasks.find((task) => task.id === id);
-  //   if (!found) {
-  //     throw new NotFoundException;
-  //   } 
-  //   return found;
-  // }
 
   // getTasksWithFilters(filterDto: GetTasksFilterDto): Task[] {
   //   const { status, search } = filterDto;
