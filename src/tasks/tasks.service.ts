@@ -12,14 +12,11 @@ export class TasksService {
     // private em: EntityManager
   ){}
 
-  // constructor(
-  //   @InjectRepository(Task)
-  //   private tasksRepository: Repository<Task>,
-  // ){}
-
+  
   async getTaskById(id: string): Promise<Task> {
     try {
       return await this.tasksRepository.findOne(id);
+      // Exception not working, need to fix
     } catch (error) {
       throw new NotFoundException()
     }
