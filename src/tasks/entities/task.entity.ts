@@ -4,7 +4,7 @@ import { TasksRepository } from "../tasks.repository";
 
 @Entity({ repository: () => TasksRepository })
 export class Task {
-  @PrimaryKey()
+  @PrimaryKey({ type: 'uuid', defaultRaw: 'gen_random_uuid()' })
   id: string;
 
   @Property()

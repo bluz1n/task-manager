@@ -3,22 +3,36 @@ import { Task } from './entities/task.entity';
 import { CreateTaskDto } from './dto/create-task-dto';
 import { TaskStatus } from './task-status.enum';
 import { TasksRepository } from './tasks.repository';
-// import { EntityManager } from '@mikro-orm/core';
+import { EntityManager } from '@mikro-orm/core';
 
 @Injectable()
 export class TasksService {
   constructor(
     private tasksRepository: TasksRepository,
-    // private em: EntityManager
+    private em: EntityManager
   ){}
 
-  
   async getTaskById(id: string): Promise<Task> {
     try {
       return await this.tasksRepository.findOne(id);
-      // Exception not working, need to fix
     } catch (error) {
       throw new NotFoundException()
+    }
+  }
+
+  async createTask(createTaskDto: CreateTaskDto): Promise<Task> {
+    const { title, description } = createTaskDto;
+    const task = this.tasksRepository.create({
+      title,
+      description,
+      status: TaskStatus.OPEN
+    });
+    try {
+    await this.em.persistAndFlush(task);
+    return task;
+    } catch (error) {
+      console.error(error)
+      throw new BadRequestException(error.message);
     }
   }
 
