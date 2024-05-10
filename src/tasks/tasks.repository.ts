@@ -3,9 +3,9 @@ import { Task } from "./entities/task.entity";
 import { CreateTaskDto } from "./dto/create-task-dto";
 import { TaskStatus } from "./task-status.enum";
 import { BadRequestException, NotFoundException } from "@nestjs/common";
+import { GetTasksFilterDto } from "./dto/get-tasks-filter-dto";
 
 export class TasksRepository extends EntityRepository<Task> {
- 
   async createTask(createTaskDto: CreateTaskDto): Promise<Task> {
     const { title, description } = createTaskDto;
     const task = this.create({
@@ -21,30 +21,19 @@ export class TasksRepository extends EntityRepository<Task> {
     }
   }
 
-  async getTaskById(id: string): Promise<Task> {
-    try {
-      const task = await this.findOne(id);
-      if (!task) {
-        throw new NotFoundException();
-      }
-      return task;
-    } catch (error) {
-      throw new BadRequestException()
+  async getTasks(filterDto: GetTasksFilterDto): Promise<Task[]> {
+    const { status, search } = filterDto;
+    const qb = this.createQueryBuilder('task');
+    if (status) {
+      qb.andWhere({ status })
+    } 
+    if (search) {
+      qb.andWhere(
+        'LOWER(task.title) LIKE LOWER(:search) OR LOWER(task.description) LIKE LOWER(:search)',
+      )
     }
-  }
-
-  async updateTaskStatus(id: string, status: TaskStatus): Promise<Task> {
-    const task = await this.getTaskById(id);
-    task.status = status;
-    await this.em.persistAndFlush(task);
-    return task;
-  }
-
-  async deleteTask(id: string): Promise<void> {
-    const result = await this.nativeDelete(id);
-    if (result === 0) {
-      throw new NotFoundException();
-    }
+    const tasks = await qb.getResult();
+    return tasks;
   }
   
 }
