@@ -1,5 +1,5 @@
 import { EntityRepository } from "@mikro-orm/postgresql";
-import { Task } from "./entities/task.entity";
+import { Task } from "./task.entity";
 import { CreateTaskDto } from "./dto/create-task-dto";
 import { TaskStatus } from "./task-status.enum";
 import { BadRequestException, NotFoundException } from "@nestjs/common";

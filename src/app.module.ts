@@ -3,12 +3,14 @@ import { ConfigModule } from '@nestjs/config';
 import { TasksModule } from './tasks/tasks.module';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { MikroORM } from '@mikro-orm/core';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     TasksModule,
-    MikroOrmModule.forRoot()
+    MikroOrmModule.forRoot(),
+    AuthModule
   ],
 })
 export class AppModule {

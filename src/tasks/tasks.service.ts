@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { Task } from './entities/task.entity';
+import { Task } from './task.entity';
 import { CreateTaskDto } from './dto/create-task-dto';
 import { TasksRepository } from './tasks.repository';
 import { TaskStatus } from './task-status.enum';
