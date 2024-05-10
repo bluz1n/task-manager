@@ -2,7 +2,7 @@ import { EntityRepository } from "@mikro-orm/postgresql";
 import { Task } from "./entities/task.entity";
 import { CreateTaskDto } from "./dto/create-task-dto";
 import { TaskStatus } from "./task-status.enum";
-import { BadRequestException } from "@nestjs/common";
+import { BadRequestException, NotFoundException } from "@nestjs/common";
 
 export class TasksRepository extends EntityRepository<Task> {
  
@@ -18,6 +18,13 @@ export class TasksRepository extends EntityRepository<Task> {
     return task;
     } catch (error) {
       throw new BadRequestException(error.message);
+    }
+  }
+
+  async deleteTask(id: string): Promise<void> {
+    const result = await this.nativeDelete(id);
+    if (result === 0) {
+      throw new NotFoundException();
     }
   }
   
