@@ -21,6 +21,25 @@ export class TasksRepository extends EntityRepository<Task> {
     }
   }
 
+  async getTaskById(id: string): Promise<Task> {
+    try {
+      const task = await this.findOne(id);
+      if (!task) {
+        throw new NotFoundException();
+      }
+      return task;
+    } catch (error) {
+      throw new BadRequestException()
+    }
+  }
+
+  async updateTaskStatus(id: string, status: TaskStatus): Promise<Task> {
+    const task = await this.getTaskById(id);
+    task.status = status;
+    await this.em.persistAndFlush(task);
+    return task;
+  }
+
   async deleteTask(id: string): Promise<void> {
     const result = await this.nativeDelete(id);
     if (result === 0) {

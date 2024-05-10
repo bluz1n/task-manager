@@ -1,26 +1,25 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Task } from './entities/task.entity';
 import { CreateTaskDto } from './dto/create-task-dto';
 import { TasksRepository } from './tasks.repository';
-import { EntityManager } from '@mikro-orm/core';
+import { TaskStatus } from './task-status.enum';
 
 @Injectable()
 export class TasksService {
   constructor(
     private tasksRepository: TasksRepository,
-    private em: EntityManager
   ){}
 
   async getTaskById(id: string): Promise<Task> {
-    const task = await this.tasksRepository.findOne(id);
-    if (!task) {
-      throw new NotFoundException(`Task with ID ${id} not found`);
-    }
-    return task;
+    return this.tasksRepository.getTaskById(id);
   }
 
   createTask(createTaskDto: CreateTaskDto): Promise<Task> {
     return this.tasksRepository.createTask(createTaskDto);
+  }
+
+  async updateTaskStatus(id: string, status: TaskStatus): Promise<Task> {
+    return this.tasksRepository.updateTaskStatus(id, status);
   }
 
   deleteTask(id: string): Promise<void> {
@@ -44,12 +43,4 @@ export class TasksService {
   //   return tasks;
   // }
 
-
-  // updateTaskStatus(id: string, status: TaskStatus) {
-  //   const task = this.getTasksById(id);
-  //   task.status = status;
-  //   return task;
-  // }
-
- 
 }
