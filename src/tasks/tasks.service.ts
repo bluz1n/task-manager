@@ -1,7 +1,6 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Task } from './entities/task.entity';
 import { CreateTaskDto } from './dto/create-task-dto';
-import { TaskStatus } from './task-status.enum';
 import { TasksRepository } from './tasks.repository';
 import { EntityManager } from '@mikro-orm/core';
 
@@ -20,20 +19,8 @@ export class TasksService {
     }
   }
 
-  async createTask(createTaskDto: CreateTaskDto): Promise<Task> {
-    const { title, description } = createTaskDto;
-    const task = this.tasksRepository.create({
-      title,
-      description,
-      status: TaskStatus.OPEN
-    });
-    try {
-    await this.em.persistAndFlush(task);
-    return task;
-    } catch (error) {
-      console.error(error)
-      throw new BadRequestException(error.message);
-    }
+  createTask(createTaskDto: CreateTaskDto): Promise<Task> {
+    return this.tasksRepository.createTask(createTaskDto);
   }
 
   // async createTask(createTaskDTO: CreateTaskDto): Promise<Task> {
