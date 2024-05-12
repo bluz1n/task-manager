@@ -1,6 +1,7 @@
 import { Entity, PrimaryKey, Property } from "@mikro-orm/core";
+import { UsersRepository } from "./users.repository";
 
-@Entity()
+@Entity({ repository: () => UsersRepository })
 export class User {
   @PrimaryKey({ type: 'uuid', defaultRaw: 'gen_random_uuid()' })
   id: string;
