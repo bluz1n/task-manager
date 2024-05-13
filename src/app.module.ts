@@ -16,6 +16,7 @@ import { MikroORM } from '@mikro-orm/core';
 export class AppModule {
   constructor(private readonly orm: MikroORM) {}
   async onModuleInit(): Promise<void> {
-    await this.orm.getMigrator().up();
+    const generator = this.orm.getSchemaGenerator();
+    await generator.updateSchema();
   }
 }
