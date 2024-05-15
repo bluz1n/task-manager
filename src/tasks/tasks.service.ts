@@ -38,7 +38,11 @@ export class TasksService {
     }
   }
 
-  async updateTaskStatus(id: string, status: TaskStatus, user: User): Promise<Task> {
+  async updateTaskStatus(
+    id: string,
+    status: TaskStatus,
+    user: User,
+  ): Promise<Task> {
     const task = await this.getTaskById(id, user);
     task.status = status;
     await this.em.persistAndFlush(task);

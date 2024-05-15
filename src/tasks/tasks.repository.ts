@@ -34,10 +34,9 @@ export class TasksRepository extends EntityRepository<Task> {
       qb.andWhere({
         $or: [
           { title: { $ilike: `%${search}%` } },
-          { description: { $ilike: `%${search}%` } }
-        ]
-      }
-      );
+          { description: { $ilike: `%${search}%` } },
+        ],
+      });
     }
     const tasks = await qb.getResult();
     return tasks;

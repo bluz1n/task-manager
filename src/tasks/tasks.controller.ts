@@ -26,8 +26,13 @@ export class TasksController {
   constructor(private tasksService: TasksService) {}
 
   @Get()
-  getTasks(@Query() filterDto: GetTasksFilterDto, @GetUser() user: User): Promise<Task[]> {
-    this.logger.verbose(`User ${user.username} retrieving all tasks, filters: ${JSON.stringify(filterDto)}`);
+  getTasks(
+    @Query() filterDto: GetTasksFilterDto,
+    @GetUser() user: User,
+  ): Promise<Task[]> {
+    this.logger.verbose(
+      `User ${user.username} retrieving all tasks, filters: ${JSON.stringify(filterDto)}`,
+    );
     return this.tasksService.getTasks(filterDto, user);
   }
 
@@ -37,8 +42,10 @@ export class TasksController {
   }
 
   @Post()
-  createTask(@Body() createTaskDto: CreateTaskDto,
-   @GetUser() user: User): Promise<Task> {
+  createTask(
+    @Body() createTaskDto: CreateTaskDto,
+    @GetUser() user: User,
+  ): Promise<Task> {
     this.logger.verbose(
       `User "${user.username}" creating a new task. Data: ${JSON.stringify(
         createTaskDto,
@@ -51,7 +58,7 @@ export class TasksController {
   updateTaskStatus(
     @Param('id') id: string,
     @Body() updateTaskStatusDto: UpdateTaskStatusDto,
-    @GetUser() user: User
+    @GetUser() user: User,
   ): Promise<Task> {
     const { status } = updateTaskStatusDto;
     return this.tasksService.updateTaskStatus(id, status, user);
