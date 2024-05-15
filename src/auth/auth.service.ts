@@ -9,10 +9,12 @@ import { JwtPayload } from './jwt-payload.interface';
 export class AuthService {
   constructor(
     private userRepository: UsersRepository,
-    private jwtService: JwtService
+    private jwtService: JwtService,
   ) {}
 
-  async signIn(authCredentialsDto: AuthCredentialsDto): Promise<{ accessToken: string }> {
+  async signIn(
+    authCredentialsDto: AuthCredentialsDto,
+  ): Promise<{ accessToken: string }> {
     const { username, password } = authCredentialsDto;
     const user = await this.userRepository.findOne({ username });
     if (user && (await bcrypt.compare(password, user.password))) {
@@ -20,12 +22,11 @@ export class AuthService {
       const accessToken: string = await this.jwtService.sign(payload);
       return { accessToken };
     } else {
-      throw new UnauthorizedException('Please check your login credentials')
+      throw new UnauthorizedException('Please check your login credentials');
     }
   }
 
   async signUp(authCredentialsDto: AuthCredentialsDto): Promise<void> {
     return await this.userRepository.createUser(authCredentialsDto);
   }
-
 }

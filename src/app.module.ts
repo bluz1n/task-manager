@@ -10,7 +10,7 @@ import { MikroORM } from '@mikro-orm/core';
     ConfigModule.forRoot(),
     MikroOrmModule.forRoot(),
     TasksModule,
-    AuthModule
+    AuthModule,
   ],
 })
 export class AppModule {

@@ -16,10 +16,10 @@ import { JwtStrategy } from './jwt.strategy';
         expiresIn: 3600,
       },
     }),
-    MikroOrmModule.forFeature([ User ])
+    MikroOrmModule.forFeature([User]),
   ],
   providers: [AuthService, JwtStrategy],
   controllers: [AuthController],
-  exports: [JwtStrategy, PassportModule]
+  exports: [JwtStrategy, PassportModule],
 })
 export class AuthModule {}

@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Task } from './task.entity';
 import { CreateTaskDto } from './dto/create-task-dto';
 import { TasksRepository } from './tasks.repository';
@@ -10,12 +14,12 @@ import { EntityManager } from '@mikro-orm/postgresql';
 export class TasksService {
   constructor(
     private tasksRepository: TasksRepository,
-    private em: EntityManager
-  ){}
+    private em: EntityManager,
+  ) {}
 
   getTasks(filterDto: GetTasksFilterDto): Promise<Task[]> {
     return this.tasksRepository.getTasks(filterDto);
-  }  
+  }
 
   createTask(createTaskDto: CreateTaskDto): Promise<Task> {
     return this.tasksRepository.createTask(createTaskDto);
@@ -29,7 +33,7 @@ export class TasksService {
       }
       return task;
     } catch (error) {
-      throw new BadRequestException()
+      throw new BadRequestException();
     }
   }
 
@@ -46,5 +50,4 @@ export class TasksService {
       throw new NotFoundException();
     }
   }
-
 }

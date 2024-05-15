@@ -1,9 +1,9 @@
-import { EntityRepository } from "@mikro-orm/postgresql";
-import { Task } from "./task.entity";
-import { CreateTaskDto } from "./dto/create-task-dto";
-import { TaskStatus } from "./task-status.enum";
-import { BadRequestException } from "@nestjs/common";
-import { GetTasksFilterDto } from "./dto/get-tasks-filter-dto";
+import { EntityRepository } from '@mikro-orm/postgresql';
+import { Task } from './task.entity';
+import { CreateTaskDto } from './dto/create-task-dto';
+import { TaskStatus } from './task-status.enum';
+import { BadRequestException } from '@nestjs/common';
+import { GetTasksFilterDto } from './dto/get-tasks-filter-dto';
 
 export class TasksRepository extends EntityRepository<Task> {
   async createTask(createTaskDto: CreateTaskDto): Promise<Task> {
@@ -11,11 +11,11 @@ export class TasksRepository extends EntityRepository<Task> {
     const task = this.create({
       title,
       description,
-      status: TaskStatus.OPEN
+      status: TaskStatus.OPEN,
     });
     try {
-    await this.em.persistAndFlush(task);
-    return task;
+      await this.em.persistAndFlush(task);
+      return task;
     } catch (error) {
       throw new BadRequestException(error.message);
     }
@@ -25,15 +25,14 @@ export class TasksRepository extends EntityRepository<Task> {
     const { status, search } = filterDto;
     const qb = this.createQueryBuilder('task');
     if (status) {
-      qb.andWhere({ status })
-    } 
+      qb.andWhere({ status });
+    }
     if (search) {
       qb.andWhere(
         'LOWER(task.title) LIKE LOWER(:search) OR LOWER(task.description) LIKE LOWER(:search)',
-      )
+      );
     }
     const tasks = await qb.getResult();
     return tasks;
   }
-  
 }
