@@ -4,10 +4,13 @@ import { AuthModule } from './auth/auth.module';
 import { TasksModule } from './tasks/tasks.module';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { MikroORM } from '@mikro-orm/core';
+import { configValidationSchema } from './config.schema';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      validationSchema: configValidationSchema,
+    }),
     MikroOrmModule.forRoot(),
     TasksModule,
     AuthModule,
