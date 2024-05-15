@@ -6,7 +6,7 @@ import {
   Unique,
 } from '@mikro-orm/core';
 import { UsersRepository } from './users.repository';
-import { Task } from 'src/tasks/task.entity';
+import { Task } from '../tasks/task.entity';
 
 @Entity({ repository: () => UsersRepository })
 export class User {

@@ -4,7 +4,7 @@ import { CreateTaskDto } from './dto/create-task-dto';
 import { TaskStatus } from './task-status.enum';
 import { BadRequestException } from '@nestjs/common';
 import { GetTasksFilterDto } from './dto/get-tasks-filter-dto';
-import { User } from 'src/auth/user.entity';
+import { User } from '../auth/user.entity';
 
 export class TasksRepository extends EntityRepository<Task> {
   async createTask(createTaskDto: CreateTaskDto, user: User): Promise<Task> {

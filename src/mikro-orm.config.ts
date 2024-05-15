@@ -10,6 +10,6 @@ export default defineConfig({
   password: process.env.DB_PASSWORD,
   dbName: process.env.DB_NAME,
   entities: ['dist/**/*.entity.js'],
-  entitiesTs: ['src/**/*.entity.ts'],
+  entitiesTs: ['../**/*.entity.ts'],
   extensions: [Migrator],
 });
