@@ -23,15 +23,20 @@ export class TasksRepository extends EntityRepository<Task> {
     }
   }
 
-  async getTasks(filterDto: GetTasksFilterDto): Promise<Task[]> {
+  async getTasks(filterDto: GetTasksFilterDto, user: User): Promise<Task[]> {
     const { status, search } = filterDto;
     const qb = this.createQueryBuilder('task');
+    qb.where({ user });
     if (status) {
       qb.andWhere({ status });
     }
     if (search) {
-      qb.andWhere(
-        'LOWER(task.title) LIKE LOWER(:search) OR LOWER(task.description) LIKE LOWER(:search)',
+      qb.andWhere({
+        $or: [
+          { title: { $ilike: `%${search}%` } },
+          { description: { $ilike: `%${search}%` } }
+        ]
+      }
       );
     }
     const tasks = await qb.getResult();
