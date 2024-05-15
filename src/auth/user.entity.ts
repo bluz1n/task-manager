@@ -20,6 +20,6 @@ export class User {
   @Property()
   password: string;
 
-  @OneToMany((_type) => Task, (task) => task.user, { eager: true })
-  task: Task[];
+  @OneToMany(() => Task, task => task.user, { eager: true })
+  tasks: Task[];
 }
