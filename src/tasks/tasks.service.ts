@@ -26,27 +26,27 @@ export class TasksService {
     return this.tasksRepository.createTask(createTaskDto, user);
   }
 
-  async getTaskById(id: string): Promise<Task> {
+  async getTaskById(id: string, user: User): Promise<Task> {
     try {
-      const task = await this.tasksRepository.findOne(id);
-      if (!task) {
+      const result = await this.tasksRepository.findOne({ id, user });
+      if (!result) {
         throw new NotFoundException();
       }
-      return task;
+      return result;
     } catch (error) {
       throw new BadRequestException();
     }
   }
 
-  async updateTaskStatus(id: string, status: TaskStatus): Promise<Task> {
-    const task = await this.getTaskById(id);
+  async updateTaskStatus(id: string, status: TaskStatus, user: User): Promise<Task> {
+    const task = await this.getTaskById(id, user);
     task.status = status;
     await this.em.persistAndFlush(task);
     return task;
   }
 
-  async deleteTask(id: string): Promise<void> {
-    const result = await this.tasksRepository.nativeDelete(id);
+  async deleteTask(id: string, user: User): Promise<void> {
+    const result = await this.tasksRepository.nativeDelete({ id, user });
     if (result === 0) {
       throw new NotFoundException();
     }
